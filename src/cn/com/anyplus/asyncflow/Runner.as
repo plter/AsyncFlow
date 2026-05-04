@@ -28,7 +28,7 @@ package cn.com.anyplus.asyncflow
             });
         }
 
-        public static function setup(func:Function, name:String = null):Runner
+        public static function build(func:Function, name:String = null):Runner
         {
             return new Runner(func, name);
         }

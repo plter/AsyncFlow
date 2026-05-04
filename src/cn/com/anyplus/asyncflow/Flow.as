@@ -1,42 +1,38 @@
 package cn.com.anyplus.asyncflow
 {
-    public class Flow
+    public class Flow extends AbstractFlow
     {
 
-        private var _vars:Object = {};
+        
         private var _runners:Vector.<Runner>;
         private var _index:int = -1;
-        private var _exceptionHandler:Function;
+        private var _currentRunner:Runner;
 
-        private function Flow(runners:Vector.<Runner>, exceptionHandler:Function = null)
+        private function Flow(runners:Vector.<Runner>, completeHandler:Function = null, exceptionHandler:Function = null)
         {
+            super(completeHandler, exceptionHandler);
             _runners = runners;
-            _exceptionHandler = exceptionHandler;
 
             step();
         }
 
-        public function get vars():Object
+        public function get currentRunner():Runner
         {
-            return _vars;
+            return _currentRunner;
         }
 
-        public function getVar(name:String):*
+        override internal function step():void
         {
-            return _vars[name];
-        }
 
-        public function setVar(name:String, value:*):void
-        {
-            _vars[name] = value;
-        }
-
-        private function step():void
-        {
+            if(isTerminated){
+                return;
+            }
+            
             _index++;
             if (_index < _runners.length)
             {
                 var runner:Runner = _runners[_index];
+                _currentRunner = runner;
                 var result:* = runner.execute(this);
                 if (result is Future)
                 {
@@ -47,14 +43,7 @@ package cn.com.anyplus.asyncflow
                         }
                         step();
                     }).catch(function(exception:*):void{
-                        if (_exceptionHandler)
-                        {
-                            _exceptionHandler(exception);
-                        }
-                        else
-                        {
-                            throw exception;
-                        }
+                        terminate(exception);
                     });
                 }
                 else
@@ -64,12 +53,16 @@ package cn.com.anyplus.asyncflow
                     }
                     step();
                 }
+            }else{
+                terminate();
             }
         }
 
-        public static function run(runners:Vector.<Runner>, exceptionHandler:Function = null):Flow
+        public static function run(runners:Vector.<Runner>):Future
         {
-            return new Flow(runners, exceptionHandler);
+            return new Future(function(resolve:Function, reject:Function):void{
+                new Flow(runners, resolve, reject);
+            });
         }
     }
 }

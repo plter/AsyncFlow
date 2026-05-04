@@ -8,18 +8,19 @@ package
         public function HelloAS()
         {
             Flow.run(new <Runner>[
-                Runner.setup(function(flow:Flow):*{
+                Runner.build(function(flow:Flow):*{
                     console.log("Hello");
                 }),
                 Runner.sleep(1000),
-                Runner.setup(function(flow:Flow):*{
+                Runner.build(function(flow:Flow):*{
                     console.log("Async");
+                    // flow.terminate();
                 }),
                 Runner.sleep(1000),
-                Runner.setup(function(flow:Flow):*{
+                Runner.build(function(flow:Flow):*{
                     console.log("Flow");
                 })
-            ])
+            ]);
         }
     }
 }
