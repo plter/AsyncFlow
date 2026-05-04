@@ -9,7 +9,8 @@
 		],
 		"library-path": [
 			"libs"
-		]
+		],
+		"source-map": true
 	},
 	"mainClass": "HelloAS"
 }

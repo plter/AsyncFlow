@@ -16,14 +16,14 @@ package cn.com.anyplus.asyncflow
             return _name;
         }
 
-        internal function execute(flow:Flow):*
+        internal function execute(flow:IFlow):*
         {
             return _func(flow);
         }
 
         public static function sleep(delay:int):Runner
         {
-            return new Runner(function(flow:Flow):Future{
+            return new Runner(function(flow:IFlow):Future{
                 return Future.sleep(delay);
             });
         }
@@ -31,6 +31,12 @@ package cn.com.anyplus.asyncflow
         public static function build(func:Function, name:String = null):Runner
         {
             return new Runner(func, name);
+        }
+
+        public static function loop(func:Function, times:int):Runner{
+            return new Runner(function(flow:IFlow):Future{
+                return Flow.loop(build(func), times);
+            });
         }
     }
 }
