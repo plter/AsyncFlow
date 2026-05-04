@@ -1,0 +1,15 @@
+{
+	"config": "node",
+	"compilerOptions": {
+		"targets": [
+			"JSNode"
+		],
+		"source-path": [
+			"src"
+		],
+		"library-path": [
+			"libs"
+		]
+	},
+	"mainClass": "HelloAS"
+}
