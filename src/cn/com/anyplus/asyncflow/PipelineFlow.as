@@ -4,10 +4,10 @@ package cn.com.anyplus.asyncflow
     {
 
         
-        private var _runners:Vector.<Runner>;
+        private var _runners:Vector.<IRunner>;
         private var _index:int = -1;
 
-        public function PipelineFlow(runners:Vector.<Runner>, completeHandler:Function = null, exceptionHandler:Function = null)
+        public function PipelineFlow(runners:Vector.<IRunner>, completeHandler:Function = null, exceptionHandler:Function = null)
         {
             _runners = runners;
             super(completeHandler, exceptionHandler);
@@ -18,7 +18,7 @@ package cn.com.anyplus.asyncflow
             return _runners.length;
         }
 
-        override internal function getRunner(index:int):Runner
+        override internal function getRunner(index:int):IRunner
         {
             return _runners[index];
         }

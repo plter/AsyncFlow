@@ -1,6 +1,6 @@
 package cn.com.anyplus.asyncflow
 {
-    public class Future
+    internal class Future implements IFuture
     {
 
         private var _result:*;
@@ -55,13 +55,6 @@ package cn.com.anyplus.asyncflow
                 }).catch(function(exception:*):void{
                     reject(exception);
                 });
-            });
-        }
-
-        public static function sleep(delay:int):Future
-        {
-            return new Future(function(resolve:Function, reject:Function):void{
-                setTimeout(resolve, delay);
             });
         }
     }

@@ -1,13 +1,13 @@
 package cn.com.anyplus.asyncflow
 {
-    public abstract class AbstractFlow implements IFlow{
+    internal abstract class AbstractFlow implements IFlow{
 
         private var _isTerminated:Boolean = false;
         private var _completeHandler:Function;
         private var _exceptionHandler:Function;
         private var _vars:Object = {};
         private var _index:int = -1;
-        private var _currentRunner:Runner;
+        private var _currentRunner:IRunner;
 
 
         public function AbstractFlow(completeHandler:Function = null,exceptionHandler:Function = null)
@@ -35,14 +35,14 @@ package cn.com.anyplus.asyncflow
 
         abstract public function get total():int;
 
-        abstract internal function getRunner(index:int):Runner;
+        abstract internal function getRunner(index:int):IRunner;
 
         public function get index():int
         {
             return _index;
         }
 
-        public function get currentRunner():Runner
+        public function get currentRunner():IRunner
         {
             return _currentRunner;
         }
@@ -55,9 +55,9 @@ package cn.com.anyplus.asyncflow
             _index++;
             if (_index < total)
             {
-                var runner:Runner = getRunner(_index);
+                var runner:IRunner = getRunner(_index);
                 _currentRunner = runner;
-                var result:* = runner.execute(this);
+                var result:* = runner.handler(this);
                 if (result is Future)
                 {
                     var future:Future = result as Future;
@@ -114,6 +114,12 @@ package cn.com.anyplus.asyncflow
         internal function get completeHandler():Function
         {
             return _completeHandler;
+        }
+
+        public function get parent():IFlow
+        {
+            // TODO: implement parent flow
+            return null;
         }
     }
     

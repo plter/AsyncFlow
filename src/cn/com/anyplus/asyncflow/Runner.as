@@ -1,14 +1,15 @@
 package cn.com.anyplus.asyncflow
 {
-    public class Runner
+    internal final class Runner implements IRunner
     {
         private var _name:String;
-        private var _func:Function;
+        private var _handler:Function;
+        private var _flow:IFlow;
 
-        private function Runner(func:Function, name:String = null)
+        public function Runner(handler:Function, name:String = null)
         {
             _name = name;
-            _func = func;
+            _handler = handler;
         }
 
         public function get name():String
@@ -16,27 +17,9 @@ package cn.com.anyplus.asyncflow
             return _name;
         }
 
-        internal function execute(flow:IFlow):*
+        public function get handler():Function
         {
-            return _func(flow);
-        }
-
-        public static function sleep(delay:int):Runner
-        {
-            return new Runner(function(flow:IFlow):Future{
-                return Future.sleep(delay);
-            });
-        }
-
-        public static function build(func:Function, name:String = null):Runner
-        {
-            return new Runner(func, name);
-        }
-
-        public static function loop(func:Function, times:int):Runner{
-            return new Runner(function(flow:IFlow):Future{
-                return Flow.loop(build(func), times);
-            });
+            return _handler;
         }
     }
 }

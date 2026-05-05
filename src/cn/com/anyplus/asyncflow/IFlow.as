@@ -12,10 +12,12 @@ package cn.com.anyplus.asyncflow
 
         function get isTerminated():Boolean;
 
-        function get currentRunner():Runner;
+        function get currentRunner():IRunner;
 
         function get total():int;
 
         function get index():int;
+
+        function get parent():IFlow;
     }
 }
