@@ -5,5 +5,7 @@ package cn.com.anyplus.asyncflow
         function get name():String;
 
         function get handler():Function;
+
+        function get flow():IFlow;
     }
 }

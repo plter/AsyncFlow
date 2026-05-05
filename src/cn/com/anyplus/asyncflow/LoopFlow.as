@@ -6,11 +6,11 @@ package cn.com.anyplus.asyncflow
         private var _index:int = -1;
         private var _count:int;
 
-        public function LoopFlow(runner:IRunner, times:int, completeHandler:Function = null, exceptionHandler:Function = null)
+        public function LoopFlow(container:IRunner, runner:IRunner, times:int, completeHandler:Function = null, exceptionHandler:Function = null)
         {
             _runner = runner;
             _count = times;
-            super(completeHandler, exceptionHandler);
+            super(container, completeHandler, exceptionHandler);
         }
 
         override public function get total():int

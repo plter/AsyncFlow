@@ -9,19 +9,19 @@ package
         public function HelloAS()
         {
             Flow.fall(new <IRunner>[
-                Flow.runner(function(runner:IFlow):*{
+                Flow.runner(function(flow:IFlow):*{
                     console.log("Hello");
                 }),
-                Flow.loopRunner(function(runner:IFlow):*{
-                    console.log("Loop",runner.index);
+                Flow.loopRunner(function(flow:IFlow):*{
+                    console.log("Loop",flow.index,flow.parent);
                 }, 3),
                 Flow.sleep(1000),
-                Flow.runner(function(runner:IFlow):*{
+                Flow.runner(function(flow:IFlow):*{
                     console.log("Async");
                     // runner.flow.terminate();
                 }),
                 Flow.sleep(1000),
-                Flow.runner(function(runner:IFlow):*{
+                Flow.runner(function(flow:IFlow):*{
                     console.log("Flow");
                 })
             ]);

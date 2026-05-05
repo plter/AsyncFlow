@@ -21,5 +21,15 @@ package cn.com.anyplus.asyncflow
         {
             return _handler;
         }
+
+        public function get flow():IFlow
+        {
+            return _flow;
+        }
+
+        internal function setFlow(value:IFlow):void
+        {
+            _flow = value;
+        }
     }
 }

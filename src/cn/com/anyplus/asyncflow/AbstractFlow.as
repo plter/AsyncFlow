@@ -8,10 +8,12 @@ package cn.com.anyplus.asyncflow
         private var _vars:Object = {};
         private var _index:int = -1;
         private var _currentRunner:IRunner;
+        private var _container:IRunner;
 
 
-        public function AbstractFlow(completeHandler:Function = null,exceptionHandler:Function = null)
+        public function AbstractFlow(container:IRunner, completeHandler:Function = null, exceptionHandler:Function = null)
         {
+            _container = container;
             _completeHandler = completeHandler;
             _exceptionHandler = exceptionHandler;
 
@@ -25,7 +27,15 @@ package cn.com.anyplus.asyncflow
 
         public function getVar(name:String):*
         {
-            return _vars[name];
+            if(vars.hasOwnProperty(name)){
+                return _vars[name];
+            }
+
+            if(parent){
+                return parent.getVar(name);
+            }
+            
+            return undefined;
         }
 
         public function setVar(name:String, value:*):void
@@ -55,8 +65,9 @@ package cn.com.anyplus.asyncflow
             _index++;
             if (_index < total)
             {
-                var runner:IRunner = getRunner(_index);
+                var runner:Runner = getRunner(_index) as Runner;
                 _currentRunner = runner;
+                runner.setFlow(this);
                 var result:* = runner.handler(this);
                 if (result is Future)
                 {
@@ -118,8 +129,28 @@ package cn.com.anyplus.asyncflow
 
         public function get parent():IFlow
         {
-            // TODO: implement parent flow
+            if(container){
+                return container.flow;
+            }
             return null;
+        }
+
+        public function get root():IFlow
+        {
+            if(parent){
+                return parent.root;
+            }
+            return this;
+        }
+
+        internal function setContainer(value:IRunner):void
+        {
+            _container = value;
+        }
+
+        public function get container():IRunner
+        {
+            return _container;
         }
     }
     

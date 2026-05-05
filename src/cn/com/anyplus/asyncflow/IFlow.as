@@ -19,5 +19,9 @@ package cn.com.anyplus.asyncflow
         function get index():int;
 
         function get parent():IFlow;
+
+        function get root():IFlow;
+
+        function get container():IRunner;
     }
 }

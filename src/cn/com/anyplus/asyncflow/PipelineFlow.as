@@ -7,10 +7,10 @@ package cn.com.anyplus.asyncflow
         private var _runners:Vector.<IRunner>;
         private var _index:int = -1;
 
-        public function PipelineFlow(runners:Vector.<IRunner>, completeHandler:Function = null, exceptionHandler:Function = null)
+        public function PipelineFlow(container:IRunner, runners:Vector.<IRunner>, completeHandler:Function = null, exceptionHandler:Function = null)
         {
             _runners = runners;
-            super(completeHandler, exceptionHandler);
+            super(container, completeHandler, exceptionHandler);
         }
 
         override public function get total():int
