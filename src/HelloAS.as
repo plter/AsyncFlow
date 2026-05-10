@@ -1,30 +1,22 @@
 package
 {
     import cn.com.anyplus.asyncflow.Flow;
-    import cn.com.anyplus.asyncflow.IFlow;
-    import cn.com.anyplus.asyncflow.IRunner;
+
+    import http.ClientRequest;
+    import http.ServerResponse;
 
     public class HelloAS
     {
         public function HelloAS()
         {
-            Flow.fall(new <IRunner>[
-                Flow.runner(function(flow:IFlow):*{
-                    console.log("Hello");
-                }),
-                Flow.loopRunner(function(flow:IFlow):*{
-                    console.log("Loop",flow.index,flow.parent);
-                }, 3),
-                Flow.sleep(1000),
-                Flow.runner(function(flow:IFlow):*{
-                    console.log("Async");
-                    // runner.flow.terminate();
-                }),
-                Flow.sleep(1000),
-                Flow.runner(function(flow:IFlow):*{
-                    console.log("Flow");
-                })
-            ]);
+            http.createServer(function(req:ClientRequest,res:ServerResponse):void{
+                Flow.run(
+                    Flow.sleep(1000),
+                    function():void{
+                        res.end("Hello, AsyncFlow!");
+                    }
+                );
+            }).listen(3000);
         }
     }
 }

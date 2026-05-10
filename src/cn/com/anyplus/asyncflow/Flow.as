@@ -2,6 +2,20 @@ package cn.com.anyplus.asyncflow
 {
     public class Flow{
 
+        public static function run(...args):Future{
+            var runners:Vector.<IRunner> = new Vector.<IRunner>();
+            for each(var arg:* in args){
+                if(arg is Function){
+                    runners.push(runner(arg));
+                }else if(arg is Runner){ // Do not use "is IRunner" here, because it may cause bad reference when compiling to JavaScript.
+                    runners.push(arg);
+                }else{
+                    throw new Error("Invalid argument type: " + arg);
+                }
+            }
+            return fall(runners);
+        }
+
         public static function fall(runners:Vector.<IRunner>, container:IRunner=null):Future
         {
             return new Future(function(resolve:Function, reject:Function):void{
